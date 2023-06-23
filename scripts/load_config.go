@@ -9,7 +9,6 @@ import (
 	"github.com/Brightscout/mattermost-load-test-scripts/serializers"
 )
 
-// TODO: remove later, if not needed
 func LoadConfig() {
 	configFile, err := os.Open("config/config.json")
 	if err != nil {
