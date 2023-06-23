@@ -1,0 +1,37 @@
+{
+    "ConnectionConfiguration": {
+        "ServerURL": "http://localhost:8065",
+        "WebSocketURL": "ws://localhost:8065",
+        "AdminEmail": "sysadmin@sample.mattermost.com",
+        "AdminPassword": "Sys@dmin-sample1"
+    },
+    "UsersConfiguration": [
+        {
+            "Username": "user-1",
+            "Password": "password-1",
+            "Email": "email-1@domain.com"
+        },
+        {
+            "Username": "user-2",
+            "Password": "password-2",
+            "Email": "email-2@domain.com"
+        }
+    ],
+    "ChannelsConfiguration": [
+        {
+            "DisplayName": "displayName-1",
+            "Name": "name-1",
+            "Type": "channelType",
+            "TeamId": "teamId"
+        },
+        {
+            "DisplayName": "displayName-2",
+            "Name": "name-2",
+            "Type": "channelType",
+            "TeamId": "teamId"
+        }
+    ],
+    "PostsConfiguration": {
+        "Count": 100
+    }
+}
