@@ -2,30 +2,29 @@ package scripts
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"os"
 
+	"github.com/Brightscout/mattermost-load-test-scripts/constants"
 	"github.com/Brightscout/mattermost-load-test-scripts/serializers"
 )
 
-// TODO: remove later, if not needed
-func LoadConfig() {
-	configFile, err := os.Open("config/config.json")
+func LoadConfig() (*serializers.Config, error) {
+	configFile, err := os.Open(constants.ConfigFile)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	defer configFile.Close()
 	byteValue, err := ioutil.ReadAll(configFile)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
-	var config serializers.Config
+	var config *serializers.Config
 	if err := json.Unmarshal(byteValue, &config); err != nil {
-		panic(err)
+		return nil, err
 	}
 
-	fmt.Println(config.ConnectionConfiguration.ServerURL)
+	return config, nil
 }
