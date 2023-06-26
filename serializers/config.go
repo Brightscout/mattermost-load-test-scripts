@@ -23,7 +23,7 @@ type ChannelsConfiguration struct {
 	DisplayName string
 	Name        string
 	Type        string
-	TeamId      string
+	TeamID      string
 }
 
 type PostsConfiguration struct {

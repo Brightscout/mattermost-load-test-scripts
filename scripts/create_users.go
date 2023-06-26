@@ -26,7 +26,7 @@ func CreateUsers(config *serializers.Config) error {
 		}
 
 		newUsers = append(newUsers, &serializers.UserResponse{
-			Id:       createdUser.Id,
+			ID:       createdUser.Id,
 			Username: createdUser.Username,
 			Email:    createdUser.Email,
 		})
@@ -39,6 +39,6 @@ func CreateUsers(config *serializers.Config) error {
 		return err
 	}
 
-	ioutil.WriteFile(constants.TempStoreFile, userMapBytes, 0644)
+	ioutil.WriteFile(constants.TempStoreFile, userMapBytes, constants.FilePermissions)
 	return nil
 }

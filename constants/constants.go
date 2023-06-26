@@ -10,3 +10,8 @@ const (
 const (
 	NewUsersKey = "createdUsers"
 )
+
+// Miscellaneous constants
+const (
+	FilePermissions = 0644
+)
