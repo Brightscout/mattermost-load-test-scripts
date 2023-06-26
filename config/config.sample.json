@@ -21,13 +21,17 @@
             "DisplayName": "displayName-1",
             "Name": "name-1",
             "Type": "channelType",
-            "TeamID": "teamId"
+            "MMTeamName": "mmTeamName",
+            "MSTeamsTeamID": "msTeamsTeamID",
+            "MSTeamsChannelID": "msTeamsChannelID"
         },
         {
             "DisplayName": "displayName-2",
             "Name": "name-2",
             "Type": "channelType",
-            "TeamID": "teamId"
+            "MMTeamName": "mmTeamName",
+            "MSTeamsTeamID": "msTeamsTeamID",
+            "MSTeamsChannelID": "msTeamsChannelID-2"
         }
     ],
     "PostsConfiguration": {

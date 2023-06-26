@@ -1,15 +1,11 @@
 package scripts
 
 import (
-	"encoding/json"
-	"io/ioutil"
-	"os"
-
 	"github.com/mattermost/mattermost-server/v6/model"
 	"go.uber.org/zap"
 
-	"github.com/Brightscout/mattermost-load-test-scripts/constants"
 	"github.com/Brightscout/mattermost-load-test-scripts/serializers"
+	"github.com/Brightscout/mattermost-load-test-scripts/utils"
 )
 
 func CreateUsers(config *serializers.Config, logger *zap.Logger) error {
@@ -34,14 +30,13 @@ func CreateUsers(config *serializers.Config, logger *zap.Logger) error {
 		})
 	}
 
-	userMap := make(map[string]interface{})
-	userMap[constants.NewUsersKey] = newUsers
-	userMapBytes, err := json.Marshal(userMap)
+	response, err := utils.LoadResponse()
 	if err != nil {
 		return err
 	}
 
-	if err := ioutil.WriteFile(constants.TempStoreFile, userMapBytes, os.ModePerm); err != nil {
+	response.UserResponse = newUsers
+	if err := utils.StoreResponse(response); err != nil {
 		return err
 	}
 

@@ -8,3 +8,9 @@ create_users:
 
 clear_store:
 	dist/plugin-build clear_store
+
+create_channels:
+	dist/plugin-build create_channels
+
+create_dm_and_gm:
+	dist/plugin-build create_dm_and_gm

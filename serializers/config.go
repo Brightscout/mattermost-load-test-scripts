@@ -20,10 +20,12 @@ type UsersConfiguration struct {
 }
 
 type ChannelsConfiguration struct {
-	DisplayName string
-	Name        string
-	Type        string
-	TeamID      string
+	DisplayName      string
+	Name             string
+	Type             string
+	MMTeamName       string
+	MSTeamsTeamID    string
+	MSTeamsChannelID string
 }
 
 type PostsConfiguration struct {

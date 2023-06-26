@@ -11,8 +11,3 @@ const (
 	CreateUsers = "create_users"
 	ClearStore  = "clear_store"
 )
-
-// Data keys
-const (
-	NewUsersKey = "createdUsers"
-)
