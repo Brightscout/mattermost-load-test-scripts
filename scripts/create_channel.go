@@ -55,6 +55,17 @@ func CreateChannels(config *serializers.Config, logger *zap.Logger) error {
 			continue
 		}
 
+		for count := 0; count < len(newUserIDs); count++ {
+			if _, _, err := client.AddChannelMember(createdChannel.Id, newUserIDs[count]); err != nil {
+				logger.Error("unable to add users to the channel",
+					zap.String("ChannelID", createdChannel.Id),
+					zap.String("UserID", newUserIDs[count]),
+					zap.Error(err),
+				)
+				continue
+			}
+		}
+
 		channelLinkCommand := fmt.Sprintf("/msteams-sync link %s %s", channel.MSTeamsTeamID, channel.MSTeamsChannelID)
 		if _, _, err := client.ExecuteCommand(createdChannel.Id, channelLinkCommand); err != nil {
 			logger.Error("unable to execute the command to link the channel", zap.Error(err))

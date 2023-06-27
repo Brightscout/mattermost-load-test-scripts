@@ -21,6 +21,10 @@ func LoadResponse() (*serializers.ClientResponse, error) {
 		return nil, err
 	}
 
+	if len(byteValue) == 0 {
+		return &serializers.ClientResponse{}, nil
+	}
+
 	var response *serializers.ClientResponse
 	if err := json.Unmarshal(byteValue, &response); err != nil {
 		return nil, err

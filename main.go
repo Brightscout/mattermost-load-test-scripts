@@ -34,6 +34,8 @@ func main() {
 			err = scripts.CreateChannels(config, logger)
 		case constants.CreateDMAndGM:
 			err = scripts.CreateDMAndGM(config, logger)
+		case "create_posts":
+			err = scripts.CreatePosts(config)
 		default:
 			err = errors.New("invalid arguments")
 		}

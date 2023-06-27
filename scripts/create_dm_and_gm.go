@@ -1,6 +1,8 @@
 package scripts
 
 import (
+	"errors"
+
 	"github.com/mattermost/mattermost-server/v6/model"
 	"go.uber.org/zap"
 
@@ -10,13 +12,17 @@ import (
 )
 
 func CreateDMAndGM(config *serializers.Config, logger *zap.Logger) error {
-	client := model.NewAPIv4Client(config.ConnectionConfiguration.ServerURL)
-	if _, _, err := client.Login(config.ConnectionConfiguration.AdminEmail, config.ConnectionConfiguration.AdminPassword); err != nil {
+	response, err := utils.LoadResponse()
+	if err != nil {
 		return err
 	}
 
-	response, err := utils.LoadResponse()
-	if err != nil {
+	if len(response.UserResponse) == 0 {
+		return errors.New("no new user created")
+	}
+
+	client := model.NewAPIv4Client(config.ConnectionConfiguration.ServerURL)
+	if _, _, err := client.Login(utils.GetUserNameAndPasswordByID(response.UserResponse[0].ID, response.UserResponse, config.UsersConfiguration)); err != nil {
 		return err
 	}
 
