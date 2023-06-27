@@ -9,7 +9,6 @@ type Config struct {
 
 type ConnectionConfiguration struct {
 	ServerURL string 
-	WebSocketURL string 
 	AdminEmail string
 	AdminPassword string 
 }

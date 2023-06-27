@@ -1,7 +1,6 @@
 {
     "ConnectionConfiguration": {
         "ServerURL": "http://localhost:8065",
-        "WebSocketURL": "ws://localhost:8065",
         "AdminEmail": "sysadmin@sample.mattermost.com",
         "AdminPassword": "Sys@dmin-sample1"
     },
