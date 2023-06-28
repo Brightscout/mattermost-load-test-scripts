@@ -11,3 +11,9 @@ const (
 	CreateUsers = "create_users"
 	ClearStore  = "clear_store"
 )
+
+// Miscellaneous constants
+const (
+	MinUsersForDM = 2
+	MinUsersForGM = 3
+)

@@ -4,12 +4,13 @@ import (
 	"fmt"
 
 	"github.com/mattermost/mattermost-server/v6/model"
+	"go.uber.org/zap"
 
 	"github.com/Brightscout/mattermost-load-test-scripts/serializers"
 	"github.com/Brightscout/mattermost-load-test-scripts/utils"
 )
 
-func CreateChannel(config *serializers.Config) error {
+func CreateChannels(config *serializers.Config, logger *zap.Logger) error {
 	client := model.NewAPIv4Client(config.ConnectionConfiguration.ServerURL)
 	if _, _, err := client.Login(config.ConnectionConfiguration.AdminEmail, config.ConnectionConfiguration.AdminPassword); err != nil {
 		return err
@@ -24,7 +25,11 @@ func CreateChannel(config *serializers.Config) error {
 	for _, channel := range config.ChannelsConfiguration {
 		team, _, err := client.GetTeamByName(channel.MMTeamName, "")
 		if err != nil {
-			return err
+			logger.Error("unable to get the team details",
+				zap.String("TeamName", channel.MMTeamName),
+				zap.Error(err),
+			)
+			continue
 		}
 
 		createdChannel, _, err := client.CreateChannel(&model.Channel{
@@ -35,7 +40,11 @@ func CreateChannel(config *serializers.Config) error {
 		})
 
 		if err != nil {
-			return err
+			logger.Error("unable to create the channel",
+				zap.String("ChannelName", channel.Name),
+				zap.Error(err),
+			)
+			continue
 		}
 
 		newChannels = append(newChannels, &serializers.ChannelResponse{
@@ -48,12 +57,19 @@ func CreateChannel(config *serializers.Config) error {
 		}
 
 		if _, _, err := client.AddTeamMembers(team.Id, newUserIDs); err != nil {
-			return err
+			logger.Error("unable to add users to the team",
+				zap.String("TeamName", channel.MMTeamName),
+				zap.Error(err),
+			)
+			continue
 		}
 
 		channelLinkCommand := fmt.Sprintf("/msteams-sync link %s %s", channel.MSTeamsTeamID, channel.MSTeamsChannelID)
 		if _, _, err := client.ExecuteCommand(createdChannel.Id, channelLinkCommand); err != nil {
-			return err
+			logger.Error("unable to execute the command to link the channel",
+				zap.Error(err),
+			)
+			continue
 		}
 
 	}

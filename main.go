@@ -31,9 +31,9 @@ func main() {
 		case constants.ClearStore:
 			err = scripts.ClearStore()
 		case "create_channels":
-			err = scripts.CreateChannel(config)
+			err = scripts.CreateChannels(config, logger)
 		case "create_dm_and_gm":
-			err = scripts.CreateDMAndGM(config)
+			err = scripts.CreateDMAndGM(config, logger)
 		default:
 			err = errors.New("invalid arguments")
 		}
