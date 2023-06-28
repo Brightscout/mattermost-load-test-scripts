@@ -5,12 +5,13 @@ import (
 	"sync"
 
 	"github.com/mattermost/mattermost-server/v6/model"
+	"go.uber.org/zap"
 
 	"github.com/Brightscout/mattermost-load-test-scripts/serializers"
 	"github.com/Brightscout/mattermost-load-test-scripts/utils"
 )
 
-func CreatePosts(config *serializers.Config) error {
+func CreatePosts(config *serializers.Config, logger *zap.Logger) error {
 	client := model.NewAPIv4Client(config.ConnectionConfiguration.ServerURL)
 	response, err := utils.LoadResponse()
 	if err != nil {
@@ -35,16 +36,27 @@ func CreatePosts(config *serializers.Config) error {
 			defer wg.Done()
 			channelID := channelIDs[rand.Intn(len(channelIDs))]
 			userID := userIDs[rand.Intn(len(userIDs))]
-			client.Login(utils.GetUserNameAndPasswordByID(userID, response.UserResponse, config.UsersConfiguration))
+			if _, _, err := client.Login(utils.GetUserNameAndPasswordByID(userID, response.UserResponse, config.UsersConfiguration)); err != nil {
+				logger.Info("Unable to login",
+					zap.String("UserID", userID),
+					zap.Error(err),
+				)
+				return
+			}
+
 			message := utils.GetRandomMessage(5)
-			client.CreatePost(&model.Post{
+			if _, _, err := client.CreatePost(&model.Post{
 				ChannelId: channelID,
 				Message:   message,
-			})
+			}); err != nil {
+				logger.Info("Unable to create the post",
+					zap.String("ChannelID", channelID),
+					zap.Error(err),
+				)
+			}
 		}(count)
 	}
 
 	wg.Wait()
-
 	return nil
 }

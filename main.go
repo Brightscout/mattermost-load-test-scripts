@@ -35,7 +35,7 @@ func main() {
 		case constants.CreateDMAndGM:
 			err = scripts.CreateDMAndGM(config, logger)
 		case "create_posts":
-			err = scripts.CreatePosts(config)
+			err = scripts.CreatePosts(config, logger)
 		default:
 			err = errors.New("invalid arguments")
 		}
