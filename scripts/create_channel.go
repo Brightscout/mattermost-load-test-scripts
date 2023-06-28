@@ -11,8 +11,9 @@ import (
 )
 
 func CreateChannels(config *serializers.Config, logger *zap.Logger) error {
-	client := model.NewAPIv4Client(config.ConnectionConfiguration.ServerURL)
-	if _, _, err := client.Login(config.ConnectionConfiguration.AdminEmail, config.ConnectionConfiguration.AdminPassword); err != nil {
+	connectionConfiguration := config.ConnectionConfiguration
+	client := model.NewAPIv4Client(connectionConfiguration.ServerURL)
+	if _, _, err := client.Login(connectionConfiguration.AdminEmail, connectionConfiguration.AdminPassword); err != nil {
 		return err
 	}
 
