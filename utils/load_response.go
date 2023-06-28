@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"os"
+	"strings"
 
 	"github.com/Brightscout/mattermost-load-test-scripts/constants"
 	"github.com/Brightscout/mattermost-load-test-scripts/serializers"
@@ -12,6 +13,10 @@ import (
 func LoadResponse() (*serializers.ClientResponse, error) {
 	responseFile, err := os.Open(constants.TempStoreFile)
 	if err != nil {
+		if strings.Contains(err.Error(), "no such file or directory") {
+			return &serializers.ClientResponse{}, nil
+		}
+
 		return nil, err
 	}
 
