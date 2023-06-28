@@ -47,8 +47,10 @@ func CreateDMAndGM(config *serializers.Config, logger *zap.Logger) error {
 		}
 	}
 
-	if err := utils.StoreResponse(response); err != nil {
-		return err
+	if response.DMResponse != nil || response.GMResponse != nil {
+		if err := utils.StoreResponse(response); err != nil {
+			return err
+		}
 	}
 
 	return nil
