@@ -23,9 +23,7 @@ func CreateDMAndGM(config *serializers.Config, logger *zap.Logger) error {
 	if len(response.UserResponse) >= constants.MinUsersForDM {
 		newDM, _, err := client.CreateDirectChannel(response.UserResponse[0].ID, response.UserResponse[1].ID)
 		if err != nil {
-			logger.Error("unable to create the DM",
-				zap.Error(err),
-			)
+			logger.Error("unable to create the DM", zap.Error(err))
 		} else {
 			response.DMResponse = &serializers.ChannelResponse{
 				ID: newDM.Id,
@@ -41,9 +39,7 @@ func CreateDMAndGM(config *serializers.Config, logger *zap.Logger) error {
 		})
 
 		if err != nil {
-			logger.Error("unable to create the GM",
-				zap.Error(err),
-			)
+			logger.Error("unable to create the GM", zap.Error(err))
 		} else {
 			response.GMResponse = &serializers.ChannelResponse{
 				ID: newGM.Id,

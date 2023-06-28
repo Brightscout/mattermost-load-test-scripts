@@ -25,10 +25,7 @@ func CreateChannels(config *serializers.Config, logger *zap.Logger) error {
 	for _, channel := range config.ChannelsConfiguration {
 		team, _, err := client.GetTeamByName(channel.MMTeamName, "")
 		if err != nil {
-			logger.Error("unable to get the team details",
-				zap.String("TeamName", channel.MMTeamName),
-				zap.Error(err),
-			)
+			logger.Error("unable to get the team details", zap.String("TeamName", channel.MMTeamName), zap.Error(err))
 			continue
 		}
 
@@ -40,10 +37,7 @@ func CreateChannels(config *serializers.Config, logger *zap.Logger) error {
 		})
 
 		if err != nil {
-			logger.Error("unable to create the channel",
-				zap.String("ChannelName", channel.Name),
-				zap.Error(err),
-			)
+			logger.Error("unable to create the channel", zap.String("ChannelName", channel.Name), zap.Error(err))
 			continue
 		}
 
@@ -57,18 +51,13 @@ func CreateChannels(config *serializers.Config, logger *zap.Logger) error {
 		}
 
 		if _, _, err := client.AddTeamMembers(team.Id, newUserIDs); err != nil {
-			logger.Error("unable to add users to the team",
-				zap.String("TeamName", channel.MMTeamName),
-				zap.Error(err),
-			)
+			logger.Error("unable to add users to the team", zap.String("TeamName", channel.MMTeamName), zap.Error(err))
 			continue
 		}
 
 		channelLinkCommand := fmt.Sprintf("/msteams-sync link %s %s", channel.MSTeamsTeamID, channel.MSTeamsChannelID)
 		if _, _, err := client.ExecuteCommand(createdChannel.Id, channelLinkCommand); err != nil {
-			logger.Error("unable to execute the command to link the channel",
-				zap.Error(err),
-			)
+			logger.Error("unable to execute the command to link the channel", zap.Error(err))
 			continue
 		}
 

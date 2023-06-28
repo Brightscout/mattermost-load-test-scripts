@@ -8,8 +8,10 @@ const (
 
 // Scripts arguments
 const (
-	CreateUsers = "create_users"
-	ClearStore  = "clear_store"
+	CreateUsers    = "create_users"
+	ClearStore     = "clear_store"
+	CreateChannels = "create_channels"
+	CreateDMAndGM  = "create_dm_and_gm"
 )
 
 // Miscellaneous constants

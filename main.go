@@ -30,9 +30,9 @@ func main() {
 			err = scripts.CreateUsers(config, logger)
 		case constants.ClearStore:
 			err = scripts.ClearStore()
-		case "create_channels":
+		case constants.CreateChannels:
 			err = scripts.CreateChannels(config, logger)
-		case "create_dm_and_gm":
+		case constants.CreateDMAndGM:
 			err = scripts.CreateDMAndGM(config, logger)
 		default:
 			err = errors.New("invalid arguments")
