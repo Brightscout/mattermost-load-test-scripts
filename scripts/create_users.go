@@ -2,27 +2,32 @@ package scripts
 
 import (
 	"encoding/json"
-	"errors"
 	"io/ioutil"
+	"os"
 
-	"github.com/mattermost/mattermost-server/v5/model"
+	"github.com/mattermost/mattermost-server/v6/model"
+	"go.uber.org/zap"
 
 	"github.com/Brightscout/mattermost-load-test-scripts/constants"
 	"github.com/Brightscout/mattermost-load-test-scripts/serializers"
 )
 
-func CreateUsers(config *serializers.Config) error {
+func CreateUsers(config *serializers.Config, logger *zap.Logger) error {
 	client := model.NewAPIv4Client(config.ConnectionConfiguration.ServerURL)
 	var newUsers []*serializers.UserResponse
 	for _, user := range config.UsersConfiguration {
-		createdUser, cErr := client.CreateUser(&model.User{
+		createdUser, _, err := client.CreateUser(&model.User{
 			Username: user.Username,
 			Email:    user.Email,
 			Password: user.Password,
 		})
 
-		if cErr.Error != nil {
-			return errors.New(cErr.Error.Message)
+		if err != nil {
+			logger.Info("unable to create new user",
+				zap.String("username", user.Username),
+				zap.Error(err),
+			)
+			continue
 		}
 
 		newUsers = append(newUsers, &serializers.UserResponse{
@@ -39,6 +44,9 @@ func CreateUsers(config *serializers.Config) error {
 		return err
 	}
 
-	ioutil.WriteFile(constants.TempStoreFile, userMapBytes, constants.FilePermissions)
+	if err := ioutil.WriteFile(constants.TempStoreFile, userMapBytes, os.ModePerm); err != nil {
+		return err
+	}
+
 	return nil
 }
