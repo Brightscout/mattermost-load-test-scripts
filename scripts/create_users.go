@@ -23,10 +23,7 @@ func CreateUsers(config *serializers.Config, logger *zap.Logger) error {
 		})
 
 		if err != nil {
-			logger.Info("unable to create new user",
-				zap.String("username", user.Username),
-				zap.Error(err),
-			)
+			logger.Info("unable to create new user", zap.String("username", user.Username), zap.Error(err))
 			continue
 		}
 

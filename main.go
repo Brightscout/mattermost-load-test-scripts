@@ -4,28 +4,30 @@ import (
 	"errors"
 	"os"
 
+	"github.com/Brightscout/mattermost-load-test-scripts/constants"
 	"github.com/Brightscout/mattermost-load-test-scripts/scripts"
 	"go.uber.org/zap"
 )
 
 func main() {
-	logger, _ := zap.NewProduction()
+	logger, err := zap.NewProduction()
+	if err != nil {
+		panic(err)
+	}
+
 	defer logger.Sync()
 	config, err := scripts.LoadConfig()
 	if err != nil {
-		logger.Error("failed to load the config",
-			zap.Error(err),
-		)
-
+		logger.Error("failed to load the config", zap.Error(err))
 		return
 	}
 
 	args := os.Args
 	if len(args) > 1 {
 		switch args[1] {
-		case "create_users":
+		case constants.CreateUsers:
 			err = scripts.CreateUsers(config, logger)
-		case "clear_store":
+		case constants.ClearStore:
 			err = scripts.ClearStore()
 		default:
 			err = errors.New("invalid arguments")
@@ -33,9 +35,6 @@ func main() {
 	}
 
 	if err != nil {
-		logger.Error("failed to run the script",
-			zap.String("arg", args[1]),
-			zap.Error(err),
-		)
+		logger.Error("failed to run the script", zap.String("arg", args[1]), zap.Error(err))
 	}
 }
