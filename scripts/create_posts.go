@@ -1,6 +1,7 @@
 package scripts
 
 import (
+	"errors"
 	"math/rand"
 	"sync"
 
@@ -18,9 +19,17 @@ func CreatePosts(config *serializers.Config, logger *zap.Logger) error {
 		return err
 	}
 
+	if response.ChannelResponse == nil {
+		return errors.New("no new channels present to create posts")
+	}
+
 	channelIDs := []string{}
 	for _, channel := range response.ChannelResponse {
 		channelIDs = append(channelIDs, channel.ID)
+	}
+
+	if response.UserResponse == nil {
+		return errors.New("no new users present to create posts")
 	}
 
 	userIDs := []string{}
@@ -28,7 +37,14 @@ func CreatePosts(config *serializers.Config, logger *zap.Logger) error {
 		userIDs = append(userIDs, user.ID)
 	}
 
-	channelIDs = append(channelIDs, response.DMResponse.ID, response.GMResponse.ID)
+	if response.DMResponse != nil && response.DMResponse.ID != "" {
+		channelIDs = append(channelIDs, response.DMResponse.ID)
+	}
+
+	if response.GMResponse != nil && response.GMResponse.ID != "" {
+		channelIDs = append(channelIDs, response.GMResponse.ID)
+	}
+
 	var wg = &sync.WaitGroup{}
 	for count := 0; count < config.PostsConfiguration.Count; count++ {
 		wg.Add(1)
