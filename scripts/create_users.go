@@ -23,10 +23,17 @@ func CreateUsers(config *serializers.Config, logger *zap.Logger) error {
 			continue
 		}
 
+		_, userResponse, err := client.Login(user.Username, user.Password)
+		if err != nil {
+			logger.Info("unable to login new user", zap.String("username", user.Username), zap.Error(err))
+			continue
+		}
+
 		newUsers = append(newUsers, &serializers.UserResponse{
 			ID:       createdUser.Id,
 			Username: createdUser.Username,
 			Email:    createdUser.Email,
+			Token:    userResponse.Header.Get(model.HeaderToken),
 		})
 	}
 

@@ -22,7 +22,7 @@ func CreateDMAndGM(config *serializers.Config, logger *zap.Logger) error {
 	}
 
 	client := model.NewAPIv4Client(config.ConnectionConfiguration.ServerURL)
-	if _, _, err := client.Login(utils.GetUserNameAndPasswordByID(response.UserResponse[0].ID, response.UserResponse, config.UsersConfiguration)); err != nil {
+	if _, _, err := client.Login(config.UsersConfiguration[0].Username, config.UsersConfiguration[0].Password); err != nil {
 		return err
 	}
 

@@ -35,6 +35,9 @@
         }
     ],
     "PostsConfiguration": {
-        "Count": 100
+        "Count": 100,
+        "MaxSentenceLength": 10,
+        "MaxWordsLength": 10,
+        "Duration": "30s"
     }
 }
