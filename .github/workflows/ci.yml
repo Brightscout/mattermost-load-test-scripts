@@ -39,7 +39,7 @@ jobs:
         id: build
         run: |
           make build
-          echo ::set-output name=BUNDLE_NAME::$(cd dist; ls *.tar.gz)
+          echo ::set-output name=BUNDLE_NAME::$(cd dist; ls)
         env:
           TERM: dumb
 

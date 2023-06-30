@@ -1,4 +1,4 @@
-# Mattermost load-test-scripts
+# Mattermost load test scripts
 
 Mattermost load-test-scripts provides a set of scripts written in [Go](https://golang.org/) to help profiling [Mattermost](https://github.com/mattermost/mattermost-server) under heavy load, simulating real-world usage of a server installation at scale.
 
@@ -33,12 +33,12 @@ Mattermost load-test-scripts provides a set of scripts written in [Go](https://g
 
 - Run command `make create_users` to create new users with the details present in the config file.
 
-- Connect the system admin account with the MS Teams account to link the new channels with the MS Teams channel.
+- Connect the system admin account with an MS Teams account to link the new channels with the MS Teams channels.
 
 - Run command `make create_channels` to create the new channels and add the new users to them. Running this command also links the Mattermost channels with the MS Teams channels present in the config file.
 
 - Run command `make create_dm_and_gm` to create the DMs and GMs between the new users.
 
-- Login and connect all the new users with their respective MS Teams accounts to enable the sharing of messages from Mattermost to MS Teams on behalf of these users.
+- Login and connect all the new users with their respective MS Teams accounts to enable the relaying of messages from Mattermost to MS Teams on behalf of these users.
 
 - Run command `make create_posts` to create the random posts in the Mattermost channels, DMs, and GMs.
