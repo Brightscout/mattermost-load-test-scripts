@@ -10,6 +10,8 @@ import (
 	"go.uber.org/zap"
 )
 
+// TODO: Complete config validation
+// TODO: Update documentation
 func main() {
 	logger, err := zap.NewProduction()
 	if err != nil {
