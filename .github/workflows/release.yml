@@ -25,11 +25,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-
 
-      - name: Build and bundle the scripts
+      - name: Build a binary for the load-tester
         id: build
         run: |
           make build
-          echo ::set-output name=BUNDLE_NAME::$(cd dist; ls)
+          echo ::set-output name=BINARY_NAME::$(cd dist; ls)
         env:
           TERM: dumb
 
@@ -50,6 +50,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: dist/${{ steps.build.outputs.BUNDLE_NAME }}
-          asset_name: ${{ steps.build.outputs.BUNDLE_NAME }}
+          asset_path: dist/${{ steps.build.outputs.BINARY_NAME }}
+          asset_name: ${{ steps.build.outputs.BINARY_NAME }}
           asset_content_type: application/octet-stream

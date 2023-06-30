@@ -16,7 +16,6 @@ func main() {
 		panic(err)
 	}
 
-	defer logger.Sync()
 	config, err := utils.LoadConfig()
 	if err != nil {
 		logger.Error("failed to load the config", zap.Error(err))
@@ -40,5 +39,9 @@ func main() {
 	}
 	if err != nil {
 		logger.Error("failed to run the script", zap.String("arg", args[1]), zap.Error(err))
+	}
+
+	if err := logger.Sync(); err != nil {
+		panic(err)
 	}
 }
