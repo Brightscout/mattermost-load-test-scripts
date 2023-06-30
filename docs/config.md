@@ -86,11 +86,11 @@ The MS Teams Channel ID to which the Mattermost channel is to be linked.
 
 The count of virtual users running concurrently and creating posts in the Mattermost channels, DMs, and GMs.
 
-### MaxSentenceLength
+### MaxWordsCount
 
 *int*
 
-The maximum length of a sentence in a post.
+The maximum number of words in a sentence in a post.
 
 ### MaxWordsLength
 
