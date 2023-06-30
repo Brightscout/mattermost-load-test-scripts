@@ -18,7 +18,7 @@ func CreateUsers(config *serializers.Config, logger *zap.Logger) error {
 
 	var newUsers []*serializers.UserResponse
 	for _, user := range config.UsersConfiguration {
-		createdUser, err := GetOrCreateUser(client, user)
+		createdUser, err := GetOrCreateUser(client, &user)
 		if err != nil {
 			logger.Info("Unable to create new user", zap.String("Username", user.Username), zap.Error(err))
 			continue
@@ -50,7 +50,7 @@ func CreateUsers(config *serializers.Config, logger *zap.Logger) error {
 	return nil
 }
 
-func GetOrCreateUser(client *model.Client4, userDetails serializers.UsersConfiguration) (*model.User, error) {
+func GetOrCreateUser(client *model.Client4, userDetails *serializers.UsersConfiguration) (*model.User, error) {
 	user, response, err := client.GetUserByUsername(userDetails.Username, "")
 	if err != nil {
 		if response.StatusCode == http.StatusNotFound {
