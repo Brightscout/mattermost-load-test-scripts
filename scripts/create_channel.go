@@ -25,13 +25,13 @@ func CreateChannels(config *serializers.Config, logger *zap.Logger) error {
 	}
 
 	for _, channel := range config.ChannelsConfiguration {
-		team, err := CreateOrGetTeam(client, channel.MMTeamName)
+		team, err := GetOrCreateTeam(client, channel.MMTeamName)
 		if err != nil {
 			logger.Error("Unable to get the team details", zap.String("TeamName", channel.MMTeamName), zap.Error(err))
 			continue
 		}
 
-		createdChannel, err := CreateOrGetChannel(client, team, channel)
+		createdChannel, err := GetOrCreateChannel(client, team, channel)
 		if err != nil {
 			logger.Error("Unable to create the channel", zap.String("ChannelName", channel.Name), zap.Error(err))
 			continue
@@ -78,7 +78,7 @@ func CreateChannels(config *serializers.Config, logger *zap.Logger) error {
 	return nil
 }
 
-func CreateOrGetTeam(client *model.Client4, teamName string) (*model.Team, error) {
+func GetOrCreateTeam(client *model.Client4, teamName string) (*model.Team, error) {
 	team, response, err := client.GetTeamByName(teamName, "")
 	if err != nil {
 		if response.StatusCode == http.StatusNotFound {
@@ -100,25 +100,25 @@ func CreateOrGetTeam(client *model.Client4, teamName string) (*model.Team, error
 	return team, nil
 }
 
-func CreateOrGetChannel(client *model.Client4, team *model.Team, channel serializers.ChannelsConfiguration) (*model.Channel, error) {
-	createdChannel, response, err := client.CreateChannel(&model.Channel{
-		TeamId:      team.Id,
-		Name:        channel.Name,
-		DisplayName: channel.DisplayName,
-		Type:        model.ChannelType(channel.Type),
-	})
+func GetOrCreateChannel(client *model.Client4, team *model.Team, channelDetails serializers.ChannelsConfiguration) (*model.Channel, error) {
+	channel, response, err := client.GetChannelByName(channelDetails.Name, team.Id, "")
 	if err != nil {
-		if response.StatusCode == http.StatusBadRequest {
-			channel, _, gErr := client.GetChannelByName(channel.Name, team.Id, "")
-			if gErr != nil {
-				return nil, gErr
+		if response.StatusCode == http.StatusNotFound {
+			newChannel, _, cErr := client.CreateChannel(&model.Channel{
+				TeamId:      team.Id,
+				Name:        channelDetails.Name,
+				DisplayName: channelDetails.DisplayName,
+				Type:        model.ChannelType(channelDetails.Type),
+			})
+			if cErr != nil {
+				return nil, cErr
 			}
 
-			return channel, nil
+			return newChannel, nil
 		}
 
 		return nil, err
 	}
 
-	return createdChannel, nil
+	return channel, nil
 }
