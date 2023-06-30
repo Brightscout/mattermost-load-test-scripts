@@ -31,7 +31,7 @@ func CreateChannels(config *serializers.Config, logger *zap.Logger) error {
 			continue
 		}
 
-		createdChannel, err := GetOrCreateChannel(client, team, channel)
+		createdChannel, err := GetOrCreateChannel(client, team, &channel)
 		if err != nil {
 			logger.Error("Unable to create the channel", zap.String("ChannelName", channel.Name), zap.Error(err))
 			continue
@@ -51,11 +51,11 @@ func CreateChannels(config *serializers.Config, logger *zap.Logger) error {
 			continue
 		}
 
-		for count := 0; count < len(newUserIDs); count++ {
-			if _, _, err := client.AddChannelMember(createdChannel.Id, newUserIDs[count]); err != nil {
+		for _, userID := range newUserIDs {
+			if _, _, err := client.AddChannelMember(createdChannel.Id, userID); err != nil {
 				logger.Error("Unable to add users to the channel",
 					zap.String("ChannelID", createdChannel.Id),
-					zap.String("UserID", newUserIDs[count]),
+					zap.String("UserID", userID),
 					zap.Error(err),
 				)
 				continue
@@ -100,7 +100,7 @@ func GetOrCreateTeam(client *model.Client4, teamName string) (*model.Team, error
 	return team, nil
 }
 
-func GetOrCreateChannel(client *model.Client4, team *model.Team, channelDetails serializers.ChannelsConfiguration) (*model.Channel, error) {
+func GetOrCreateChannel(client *model.Client4, team *model.Team, channelDetails *serializers.ChannelsConfiguration) (*model.Channel, error) {
 	channel, response, err := client.GetChannelByName(channelDetails.Name, team.Id, "")
 	if err != nil {
 		if response.StatusCode == http.StatusNotFound {

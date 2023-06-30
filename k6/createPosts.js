@@ -1,7 +1,11 @@
 import http from 'k6/http';
 
 const config = JSON.parse(open('../config/config.json'));
+<<<<<<< HEAD
 const response = JSON.parse(open('../temp_store.json'));
+=======
+const creds = JSON.parse(open('../temp_store.json'));
+>>>>>>> a6f6c9aaefce1279172bb3fe3c31331ad1deb556
 
 export const options = {
     vus: config.PostsConfiguration.Count,
@@ -18,17 +22,26 @@ function getRandomMessage(wordsCount, wordLength) {
         wordLength = Math.floor(Math.random() * wordLength) + 1;
         while (count < wordLength) {
             message += characterSet.charAt(Math.floor(Math.random() * characterSet.length));
+<<<<<<< HEAD
             count += 1;
         }
 
         message += ' ';
         words += 1;
+=======
+            count++;
+        }
+
+        message += ' ';
+        words++;
+>>>>>>> a6f6c9aaefce1279172bb3fe3c31331ad1deb556
     }
 
 	return message;
 }
 
 function getRandomToken() {
+<<<<<<< HEAD
     let token = [];
     response.UserResponse.map((u) => token.push(u.token));
     return token[(Math.floor(Math.random() * token.length))];
@@ -46,6 +59,25 @@ function getRandomChannel() {
     }
 
     return channelId[(Math.floor(Math.random() * channelId.length))];
+=======
+    let tokens = [];
+    creds.UserResponse.map((u) => tokens.push(u.token));
+    return tokens[(Math.floor(Math.random() * tokens.length))];
+}
+
+function getRandomChannel() {
+    let channelIds = [];
+    creds.ChannelResponse.map((c) => channelIds.push(c.id));
+    if (creds.DMResponse) {
+        channelIds.push(creds.DMResponse.id);
+    }
+
+    if (creds.GMResponse) {
+        channelIds.push(creds.GMResponse.id);
+    }
+
+    return channelIds[(Math.floor(Math.random() * channelIds.length))];
+>>>>>>> a6f6c9aaefce1279172bb3fe3c31331ad1deb556
 }
 
 export default function() {

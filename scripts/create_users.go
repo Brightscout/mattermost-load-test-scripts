@@ -1,6 +1,8 @@
 package scripts
 
 import (
+	"net/http"
+
 	"github.com/mattermost/mattermost-server/v6/model"
 	"go.uber.org/zap"
 
@@ -10,13 +12,13 @@ import (
 
 func CreateUsers(config *serializers.Config, logger *zap.Logger) error {
 	client := model.NewAPIv4Client(config.ConnectionConfiguration.ServerURL)
+	if _, _, err := client.Login(config.ConnectionConfiguration.AdminEmail, config.ConnectionConfiguration.AdminPassword); err != nil {
+		return err
+	}
+
 	var newUsers []*serializers.UserResponse
 	for _, user := range config.UsersConfiguration {
-		createdUser, _, err := client.CreateUser(&model.User{
-			Username: user.Username,
-			Email:    user.Email,
-			Password: user.Password,
-		})
+		createdUser, err := GetOrCreateUser(client, &user)
 		if err != nil {
 			logger.Info("Unable to create new user", zap.String("Username", user.Username), zap.Error(err))
 			continue
@@ -46,4 +48,26 @@ func CreateUsers(config *serializers.Config, logger *zap.Logger) error {
 	}
 
 	return nil
+}
+
+func GetOrCreateUser(client *model.Client4, userDetails *serializers.UsersConfiguration) (*model.User, error) {
+	user, response, err := client.GetUserByUsername(userDetails.Username, "")
+	if err != nil {
+		if response.StatusCode == http.StatusNotFound {
+			newUser, _, cErr := client.CreateUser(&model.User{
+				Username: userDetails.Username,
+				Email:    userDetails.Email,
+				Password: userDetails.Password,
+			})
+			if cErr != nil {
+				return nil, cErr
+			}
+
+			return newUser, nil
+		}
+
+		return nil, err
+	}
+
+	return user, nil
 }
