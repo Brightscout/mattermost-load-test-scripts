@@ -38,7 +38,6 @@ func main() {
 			err = errors.New("invalid arguments")
 		}
 	}
-
 	if err != nil {
 		logger.Error("failed to run the script", zap.String("arg", args[1]), zap.Error(err))
 	}

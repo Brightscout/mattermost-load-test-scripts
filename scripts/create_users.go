@@ -17,7 +17,6 @@ func CreateUsers(config *serializers.Config, logger *zap.Logger) error {
 			Email:    user.Email,
 			Password: user.Password,
 		})
-
 		if err != nil {
 			logger.Info("unable to create new user", zap.String("username", user.Username), zap.Error(err))
 			continue
