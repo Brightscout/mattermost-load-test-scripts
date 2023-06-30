@@ -25,7 +25,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-
 
-      - name: Build and bundle the plugin
+      - name: Build and bundle the scripts
         id: build
         run: |
           make build
@@ -52,4 +52,3 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: dist/${{ steps.build.outputs.BUNDLE_NAME }}
           asset_name: ${{ steps.build.outputs.BUNDLE_NAME }}
-          asset_content_type: application/gzip

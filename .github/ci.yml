@@ -35,7 +35,7 @@ jobs:
         env:
           TERM: dumb
 
-      - name: Build and bundle the plugin
+      - name: Build and bundle the scripts
         id: build
         run: |
           make build
@@ -43,7 +43,7 @@ jobs:
         env:
           TERM: dumb
 
-      - name: Upload the built plugin as an artifact
+      - name: Upload the built bundle as an artifact
         uses: actions/upload-artifact@v2
         with:
           name: ${{ steps.build.outputs.BUNDLE_NAME }}

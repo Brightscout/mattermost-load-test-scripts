@@ -92,7 +92,7 @@ The count of virtual users running concurrently and creating posts in the Matter
 
 The maximum number of words in a sentence in a post.
 
-### MaxWordsLength
+### MaxWordLength
 
 *int*
 
