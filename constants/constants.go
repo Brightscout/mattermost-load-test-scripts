@@ -11,11 +11,10 @@ const (
 	CreateUsers    = "create_users"
 	ClearStore     = "clear_store"
 	CreateChannels = "create_channels"
-	CreateDMAndGM  = "create_dm_and_gm"
+	CreateDMAndGMs = "create_dm_and_gm"
 	CreatePosts    = "create_posts"
 )
 
-// Miscellaneous constants
 const (
 	MinUsersForDM = 2
 	MinUsersForGM = 3

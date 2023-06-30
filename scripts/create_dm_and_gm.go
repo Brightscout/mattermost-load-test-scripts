@@ -11,8 +11,8 @@ import (
 	"github.com/Brightscout/mattermost-load-test-scripts/utils"
 )
 
-func CreateDMAndGM(config *serializers.Config, logger *zap.Logger) error {
-	response, err := utils.LoadResponse()
+func CreateDMAndGMs(config *serializers.Config, logger *zap.Logger) error {
+	response, err := utils.LoadCreds()
 	if err != nil {
 		return err
 	}
@@ -43,7 +43,6 @@ func CreateDMAndGM(config *serializers.Config, logger *zap.Logger) error {
 			response.UserResponse[1].ID,
 			response.UserResponse[2].ID,
 		})
-
 		if err != nil {
 			logger.Error("unable to create the GM", zap.Error(err))
 		} else {
@@ -53,8 +52,10 @@ func CreateDMAndGM(config *serializers.Config, logger *zap.Logger) error {
 		}
 	}
 
-	if err := utils.StoreResponse(response); err != nil {
-		return err
+	if response.DMResponse != nil || response.GMResponse != nil {
+		if err := utils.StoreCreds(response); err != nil {
+			return err
+		}
 	}
 
 	return nil

@@ -9,7 +9,7 @@ import (
 	"github.com/Brightscout/mattermost-load-test-scripts/serializers"
 )
 
-func StoreResponse(response *serializers.ClientResponse) error {
+func StoreCreds(response *serializers.ClientResponse) error {
 	responseBytes, err := json.Marshal(response)
 	if err != nil {
 		return err

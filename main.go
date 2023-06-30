@@ -32,13 +32,12 @@ func main() {
 			err = scripts.ClearStore()
 		case constants.CreateChannels:
 			err = scripts.CreateChannels(config, logger)
-		case constants.CreateDMAndGM:
-			err = scripts.CreateDMAndGM(config, logger)
+		case constants.CreateDMAndGMs:
+			err = scripts.CreateDMAndGMs(config, logger)
 		default:
 			err = errors.New("invalid arguments")
 		}
 	}
-
 	if err != nil {
 		logger.Error("failed to run the script", zap.String("arg", args[1]), zap.Error(err))
 	}

@@ -17,7 +17,6 @@ func CreateUsers(config *serializers.Config, logger *zap.Logger) error {
 			Email:    user.Email,
 			Password: user.Password,
 		})
-
 		if err != nil {
 			logger.Info("unable to create new user", zap.String("username", user.Username), zap.Error(err))
 			continue
@@ -31,19 +30,18 @@ func CreateUsers(config *serializers.Config, logger *zap.Logger) error {
 
 		newUsers = append(newUsers, &serializers.UserResponse{
 			ID:       createdUser.Id,
-			Username: createdUser.Username,
 			Email:    createdUser.Email,
 			Token:    userResponse.Header.Get(model.HeaderToken),
 		})
 	}
 
-	response, err := utils.LoadResponse()
+	response, err := utils.LoadCreds()
 	if err != nil {
 		return err
 	}
 
 	response.UserResponse = newUsers
-	if err := utils.StoreResponse(response); err != nil {
+	if err := utils.StoreCreds(response); err != nil {
 		return err
 	}
 

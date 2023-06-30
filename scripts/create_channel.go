@@ -2,6 +2,7 @@ package scripts
 
 import (
 	"fmt"
+	"net/http"
 
 	"github.com/mattermost/mattermost-server/v6/model"
 	"go.uber.org/zap"
@@ -11,31 +12,26 @@ import (
 )
 
 func CreateChannels(config *serializers.Config, logger *zap.Logger) error {
-	client := model.NewAPIv4Client(config.ConnectionConfiguration.ServerURL)
-	if _, _, err := client.Login(config.ConnectionConfiguration.AdminEmail, config.ConnectionConfiguration.AdminPassword); err != nil {
+	connectionConfiguration := config.ConnectionConfiguration
+	client := model.NewAPIv4Client(connectionConfiguration.ServerURL)
+	if _, _, err := client.Login(connectionConfiguration.AdminEmail, connectionConfiguration.AdminPassword); err != nil {
 		return err
 	}
 
 	var newChannels []*serializers.ChannelResponse
-	response, err := utils.LoadResponse()
+	response, err := utils.LoadCreds()
 	if err != nil {
 		return err
 	}
 
 	for _, channel := range config.ChannelsConfiguration {
-		team, _, err := client.GetTeamByName(channel.MMTeamName, "")
+		team, err := CreateOrGetTeam(client, channel.MMTeamName)
 		if err != nil {
 			logger.Error("unable to get the team details", zap.String("TeamName", channel.MMTeamName), zap.Error(err))
 			continue
 		}
 
-		createdChannel, _, err := client.CreateChannel(&model.Channel{
-			TeamId:      team.Id,
-			Name:        channel.Name,
-			DisplayName: channel.DisplayName,
-			Type:        model.ChannelType(channel.Type),
-		})
-
+		createdChannel, err := CreateOrGetChannel(client, team, channel)
 		if err != nil {
 			logger.Error("unable to create the channel", zap.String("ChannelName", channel.Name), zap.Error(err))
 			continue
@@ -75,9 +71,54 @@ func CreateChannels(config *serializers.Config, logger *zap.Logger) error {
 	}
 
 	response.ChannelResponse = newChannels
-	if err := utils.StoreResponse(response); err != nil {
+	if err := utils.StoreCreds(response); err != nil {
 		return err
 	}
 
 	return nil
+}
+
+func CreateOrGetTeam(client *model.Client4, teamName string) (*model.Team, error) {
+	team, response, err := client.GetTeamByName(teamName, "")
+	if err != nil {
+		if response.StatusCode == http.StatusNotFound {
+			newTeam, _, cErr := client.CreateTeam(&model.Team{
+				Name:        teamName,
+				DisplayName: teamName,
+				Type:        model.TeamOpen,
+			})
+			if cErr != nil {
+				return nil, cErr
+			}
+
+			return newTeam, nil
+		}
+
+		return nil, err
+	}
+
+	return team, nil
+}
+
+func CreateOrGetChannel(client *model.Client4, team *model.Team, channel serializers.ChannelsConfiguration) (*model.Channel, error) {
+	createdChannel, response, err := client.CreateChannel(&model.Channel{
+		TeamId:      team.Id,
+		Name:        channel.Name,
+		DisplayName: channel.DisplayName,
+		Type:        model.ChannelType(channel.Type),
+	})
+	if err != nil {
+		if response.StatusCode == http.StatusBadRequest {
+			channel, _, gErr := client.GetChannelByName(channel.Name, team.Id, "")
+			if gErr != nil {
+				return nil, gErr
+			}
+
+			return channel, nil
+		}
+
+		return nil, err
+	}
+
+	return createdChannel, nil
 }
