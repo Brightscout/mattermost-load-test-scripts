@@ -27,13 +27,13 @@ func CreateChannels(config *serializers.Config, logger *zap.Logger) error {
 	for _, channel := range config.ChannelsConfiguration {
 		team, err := CreateOrGetTeam(client, channel.MMTeamName)
 		if err != nil {
-			logger.Error("unable to get the team details", zap.String("TeamName", channel.MMTeamName), zap.Error(err))
+			logger.Error("Unable to get the team details", zap.String("TeamName", channel.MMTeamName), zap.Error(err))
 			continue
 		}
 
 		createdChannel, err := CreateOrGetChannel(client, team, channel)
 		if err != nil {
-			logger.Error("unable to create the channel", zap.String("ChannelName", channel.Name), zap.Error(err))
+			logger.Error("Unable to create the channel", zap.String("ChannelName", channel.Name), zap.Error(err))
 			continue
 		}
 
@@ -47,13 +47,13 @@ func CreateChannels(config *serializers.Config, logger *zap.Logger) error {
 		}
 
 		if _, _, err := client.AddTeamMembers(team.Id, newUserIDs); err != nil {
-			logger.Error("unable to add users to the team", zap.String("TeamName", channel.MMTeamName), zap.Error(err))
+			logger.Error("Unable to add users to the team", zap.String("TeamName", channel.MMTeamName), zap.Error(err))
 			continue
 		}
 
 		for count := 0; count < len(newUserIDs); count++ {
 			if _, _, err := client.AddChannelMember(createdChannel.Id, newUserIDs[count]); err != nil {
-				logger.Error("unable to add users to the channel",
+				logger.Error("Unable to add users to the channel",
 					zap.String("ChannelID", createdChannel.Id),
 					zap.String("UserID", newUserIDs[count]),
 					zap.Error(err),
@@ -64,7 +64,7 @@ func CreateChannels(config *serializers.Config, logger *zap.Logger) error {
 
 		channelLinkCommand := fmt.Sprintf("/msteams-sync link %s %s", channel.MSTeamsTeamID, channel.MSTeamsChannelID)
 		if _, _, err := client.ExecuteCommand(createdChannel.Id, channelLinkCommand); err != nil {
-			logger.Error("unable to execute the command to link the channel", zap.Error(err))
+			logger.Error("Unable to execute the command to link the channel", zap.Error(err))
 			continue
 		}
 

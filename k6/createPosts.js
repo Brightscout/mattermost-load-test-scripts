@@ -8,16 +8,16 @@ export const options = {
     duration: config.PostsConfiguration.Duration,
 }
 
-function getRandomMessage(sentenceLength, wordsLength) {
+function getRandomMessage(wordsCount, wordLength) {
 	let message = '';
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const characterSet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 	let words = 0;
-    sentenceLength = Math.floor(Math.random() * sentenceLength) + 1;
-    while (words < sentenceLength) {
+    wordsCount = Math.floor(Math.random() * wordsCount) + 1;
+    while (words < wordsCount) {
         let count = 0;
-        wordsLength = Math.floor(Math.random() * wordsLength) + 1;
-        while (count < wordsLength) {
-            message += characters.charAt(Math.floor(Math.random() * characters.length));
+        wordLength = Math.floor(Math.random() * wordLength) + 1;
+        while (count < wordLength) {
+            message += characterSet.charAt(Math.floor(Math.random() * characterSet.length));
             count += 1;
         }
 
@@ -51,7 +51,7 @@ function getRandomChannel() {
 export default function() {
     const payload = JSON.stringify({
         channel_id: getRandomChannel(),
-        message: getRandomMessage(config.PostsConfiguration.MaxSentenceLength, config.PostsConfiguration.MaxWordsLength)
+        message: getRandomMessage(config.PostsConfiguration.MaxSentenceLength, config.PostsConfiguration.MaxWordLength)
     })
 
     const headers = {
