@@ -16,6 +16,7 @@ func main() {
 	}
 
 	defer logger.Sync()
+
 	config, err := scripts.LoadConfig()
 	if err != nil {
 		logger.Error("failed to load the config", zap.Error(err))
@@ -33,7 +34,6 @@ func main() {
 			err = errors.New("invalid arguments")
 		}
 	}
-
 	if err != nil {
 		logger.Error("failed to run the script", zap.String("arg", args[1]), zap.Error(err))
 	}

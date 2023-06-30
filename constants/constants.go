@@ -6,7 +6,7 @@ const (
 	TempStoreFile = "temp_store.json"
 )
 
-// Scripts arguments
+// Script arguments
 const (
 	CreateUsers = "create_users"
 	ClearStore  = "clear_store"
