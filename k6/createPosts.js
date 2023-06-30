@@ -1,7 +1,7 @@
 import http from 'k6/http';
 
 const config = JSON.parse(open('../config/config.json'));
-const response = JSON.parse(open('../temp_store.json'));
+const creds = JSON.parse(open('../temp_store.json'));
 
 export const options = {
     vus: config.PostsConfiguration.Count,
@@ -18,34 +18,34 @@ function getRandomMessage(wordsCount, wordLength) {
         wordLength = Math.floor(Math.random() * wordLength) + 1;
         while (count < wordLength) {
             message += characterSet.charAt(Math.floor(Math.random() * characterSet.length));
-            count += 1;
+            count++;
         }
 
         message += ' ';
-        words += 1;
+        words++;
     }
 
 	return message;
 }
 
 function getRandomToken() {
-    let token = [];
-    response.UserResponse.map((u) => token.push(u.token));
-    return token[(Math.floor(Math.random() * token.length))];
+    let tokens = [];
+    creds.UserResponse.map((u) => tokens.push(u.token));
+    return tokens[(Math.floor(Math.random() * tokens.length))];
 }
 
 function getRandomChannel() {
-    let channelId = [];
-    response.ChannelResponse.map((c) => channelId.push(c.id));
-    if (response.DMResponse) {
-        channelId.push(response.DMResponse.id);
+    let channelIds = [];
+    creds.ChannelResponse.map((c) => channelIds.push(c.id));
+    if (creds.DMResponse) {
+        channelIds.push(creds.DMResponse.id);
     }
 
-    if (response.GMResponse) {
-        channelId.push(response.GMResponse.id);
+    if (creds.GMResponse) {
+        channelIds.push(creds.GMResponse.id);
     }
 
-    return channelId[(Math.floor(Math.random() * channelId.length))];
+    return channelIds[(Math.floor(Math.random() * channelIds.length))];
 }
 
 export default function() {
