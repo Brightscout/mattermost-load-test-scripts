@@ -8,9 +8,8 @@ type ClientResponse struct {
 }
 
 type UserResponse struct {
-	ID       string `json:"id"`
-	Username string `json:"username"`
-	Email    string `json:"email"`
+	ID    string `json:"id"`
+	Email string `json:"email"`
 }
 
 type ChannelResponse struct {

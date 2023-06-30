@@ -23,19 +23,18 @@ func CreateUsers(config *serializers.Config, logger *zap.Logger) error {
 		}
 
 		newUsers = append(newUsers, &serializers.UserResponse{
-			ID:       createdUser.Id,
-			Username: createdUser.Username,
-			Email:    createdUser.Email,
+			ID:    createdUser.Id,
+			Email: createdUser.Email,
 		})
 	}
 
-	response, err := utils.LoadResponse()
+	response, err := utils.LoadCreds()
 	if err != nil {
 		return err
 	}
 
 	response.UserResponse = newUsers
-	if err := utils.StoreResponse(response); err != nil {
+	if err := utils.StoreCreds(response); err != nil {
 		return err
 	}
 

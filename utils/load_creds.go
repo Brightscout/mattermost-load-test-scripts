@@ -9,14 +9,14 @@ import (
 	"github.com/Brightscout/mattermost-load-test-scripts/serializers"
 )
 
-func LoadResponse() (*serializers.ClientResponse, error) {
-	responseFile, err := os.Open(constants.TempStoreFile)
+func LoadCreds() (*serializers.ClientResponse, error) {
+	tempStoreFile, err := os.Open(constants.TempStoreFile)
 	if err != nil {
 		return nil, err
 	}
 
-	defer responseFile.Close()
-	byteValue, err := ioutil.ReadAll(responseFile)
+	defer tempStoreFile.Close()
+	byteValue, err := ioutil.ReadAll(tempStoreFile)
 	if err != nil {
 		return nil, err
 	}
