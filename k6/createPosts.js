@@ -51,7 +51,7 @@ function getRandomChannel() {
 export default function() {
     const payload = JSON.stringify({
         channel_id: getRandomChannel(),
-        message: getRandomMessage(config.PostsConfiguration.MaxSentenceLength, config.PostsConfiguration.MaxWordLength)
+        message: getRandomMessage(config.PostsConfiguration.MaxWordsCount, config.PostsConfiguration.MaxWordLength)
     })
 
     const headers = {

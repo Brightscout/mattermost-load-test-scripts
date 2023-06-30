@@ -36,7 +36,7 @@
     ],
     "PostsConfiguration": {
         "Count": 100,
-        "MaxSentenceLength": 10,
+        "MaxWordsCount": 10,
         "MaxWordLength": 10,
         "Duration": "30s"
     }

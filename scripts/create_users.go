@@ -18,13 +18,13 @@ func CreateUsers(config *serializers.Config, logger *zap.Logger) error {
 			Password: user.Password,
 		})
 		if err != nil {
-			logger.Info("Unable to create new user", zap.String("username", user.Username), zap.Error(err))
+			logger.Info("Unable to create new user", zap.String("Username", user.Username), zap.Error(err))
 			continue
 		}
 
 		_, userResponse, err := client.Login(user.Username, user.Password)
 		if err != nil {
-			logger.Info("Unable to login new user", zap.String("username", user.Username), zap.Error(err))
+			logger.Info("Unable to login new user", zap.String("Username", user.Username), zap.Error(err))
 			continue
 		}
 
