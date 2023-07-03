@@ -31,9 +31,9 @@ func CreateUsers(config *serializers.Config, logger *zap.Logger) error {
 		}
 
 		newUsers = append(newUsers, &serializers.UserResponse{
-			ID:       createdUser.Id,
-			Email:    createdUser.Email,
-			Token:    userResponse.Header.Get(model.HeaderToken),
+			ID:    createdUser.Id,
+			Email: createdUser.Email,
+			Token: userResponse.Header.Get(model.HeaderToken),
 		})
 	}
 

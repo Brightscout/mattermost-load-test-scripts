@@ -8,8 +8,8 @@ type ClientResponse struct {
 }
 
 type UserResponse struct {
-	ID       string `json:"id"`
-	Token    string `json:"token"`
+	ID    string `json:"id"`
+	Token string `json:"token"`
 	Email string `json:"email"`
 }
 

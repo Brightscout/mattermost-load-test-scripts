@@ -8,6 +8,18 @@ export const options = {
     duration: config.PostsConfiguration.Duration,
 }
 
+export function setup() {
+	if (config.PostsConfiguration.MaxWordsCount <= 0) {
+        console.error("Error in validating the posts configuration:", "max words count should not be empty and greater than 0");
+		return;
+	}
+
+	if (config.PostsConfiguration.MaxWordLength <= 0) {
+        console.error("Error in validating the posts configuration:", "max words length not be empty and greater than 0");
+		return;
+	}
+}
+
 function getRandomMessage(wordsCount, wordLength) {
 	let message = '';
     const characterSet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';

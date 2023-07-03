@@ -10,7 +10,6 @@ import (
 	"go.uber.org/zap"
 )
 
-// TODO: Complete config validation
 // TODO: Update documentation
 func main() {
 	logger, err := zap.NewProduction()
@@ -24,14 +23,29 @@ func main() {
 		return
 	}
 
+	if err := config.IsConnectionConfigurationValid(); err != nil {
+		logger.Error("Error in validating the connection configuration", zap.Error(err))
+		return
+	}
+
 	args := os.Args
 	if len(args) > 1 {
 		switch args[1] {
 		case constants.CreateUsers:
+			if err := config.IsUsersConfigurationValid(); err != nil {
+				logger.Error("Error in validating the user configuration", zap.Error(err))
+				break
+			}
+
 			err = scripts.CreateUsers(config, logger)
 		case constants.ClearStore:
 			err = scripts.ClearStore()
 		case constants.CreateChannels:
+			if err := config.IsChannelsConfigurationValid(); err != nil {
+				logger.Error("Error in validating the channel configuration", zap.Error(err))
+				break
+			}
+
 			err = scripts.CreateChannels(config, logger)
 		case constants.CreateDMAndGMs:
 			err = scripts.CreateDMAndGMs(config, logger)
@@ -43,7 +57,5 @@ func main() {
 		logger.Error("failed to run the script", zap.String("arg", args[1]), zap.Error(err))
 	}
 
-	if err := logger.Sync(); err != nil {
-		panic(err)
-	}
+	_ = logger.Sync()
 }
