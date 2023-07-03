@@ -19,7 +19,7 @@ const (
 	MinUsersForGM = 3
 )
 
-// Validations errors
+// Validation errors
 const (
 	ErrorEmptyServerURL          = "server URL should not be empty"
 	ErrorEmptyAdminEmail         = "admin email should not be empty"
