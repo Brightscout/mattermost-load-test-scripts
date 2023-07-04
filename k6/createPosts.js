@@ -10,7 +10,7 @@ export const options = {
 
 export function setup() {
 	if (config.PostsConfiguration.MaxWordsCount <= 0) {
-        console.error("Error in validating the posts configuration:", "max words count should be greater than 0");
+        console.error("Error in validating the posts configuration:", "max word count should be greater than 0");
 		return;
 	}
 
