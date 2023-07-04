@@ -10,12 +10,12 @@ export const options = {
 
 export function setup() {
 	if (config.PostsConfiguration.MaxWordsCount <= 0) {
-        console.error("Error in validating the posts configuration:", "max words count should not be empty and greater than 0");
+        console.error("Error in validating the posts configuration:", "max word count should be greater than 0");
 		return;
 	}
 
 	if (config.PostsConfiguration.MaxWordLength <= 0) {
-        console.error("Error in validating the posts configuration:", "max words length not be empty and greater than 0");
+        console.error("Error in validating the posts configuration:", "max word length should be greater than 0");
 		return;
 	}
 }
