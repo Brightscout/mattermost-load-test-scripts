@@ -65,7 +65,7 @@ func (c *Config) IsUsersConfigurationValid() error {
 		}
 
 		if user.Email == "" {
-			return errors.New(constants.ErrorEmptyUserEmailL)
+			return errors.New(constants.ErrorEmptyUserEmail)
 		}
 
 		if user.Password == "" {
