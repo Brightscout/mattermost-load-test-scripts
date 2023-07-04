@@ -10,7 +10,6 @@ import (
 	"go.uber.org/zap"
 )
 
-// TODO: Update documentation
 func main() {
 	logger, err := zap.NewProduction()
 	if err != nil {
