@@ -56,10 +56,7 @@ func (c *Config) IsConnectionConfigurationValid() error {
 		return errors.New(constants.ErrorEmptyAdminPassword)
 	}
 
-	connectionConfig := c.ConnectionConfiguration
-	connectionConfig.ServerURL = strings.TrimRight(strings.TrimSpace(connectionConfig.ServerURL), "/")
-	connectionConfig.AdminEmail = strings.TrimSpace(connectionConfig.AdminEmail)
-	connectionConfig.AdminPassword = strings.TrimSpace(connectionConfig.AdminPassword)
+	c.ConnectionConfiguration.ServerURL = strings.TrimRight(strings.TrimSpace(c.ConnectionConfiguration.ServerURL), "/")
 
 	return nil
 }
