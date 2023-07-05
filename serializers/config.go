@@ -2,6 +2,7 @@ package serializers
 
 import (
 	"errors"
+	"strings"
 
 	"github.com/Brightscout/mattermost-load-test-scripts/constants"
 	"github.com/mattermost/mattermost-server/v6/model"
@@ -55,6 +56,11 @@ func (c *Config) IsConnectionConfigurationValid() error {
 		return errors.New(constants.ErrorEmptyAdminPassword)
 	}
 
+	connectionConfig := c.ConnectionConfiguration
+	connectionConfig.ServerURL = strings.TrimRight(strings.TrimSpace(connectionConfig.ServerURL), "/")
+	connectionConfig.AdminEmail = strings.TrimSpace(connectionConfig.AdminEmail)
+	connectionConfig.AdminPassword = strings.TrimSpace(connectionConfig.AdminPassword)
+
 	return nil
 }
 
@@ -71,6 +77,8 @@ func (c *Config) IsUsersConfigurationValid() error {
 		if user.Password == "" {
 			return errors.New(constants.ErrorEmptyUserPassword)
 		}
+
+		user.Email = strings.TrimSpace(user.Email)
 	}
 
 	return nil
