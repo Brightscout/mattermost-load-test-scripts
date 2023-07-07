@@ -28,7 +28,7 @@ const (
 	ErrorEmptyUserPassword       = "user password should not be empty"
 	ErrorEmptyUserEmail          = "user email should not be empty"
 	ErrorEmptyChannelDisplayName = "channel display name should not be empty"
-	ErrorEmptyChannelName        = "channel name should not be empty"
+	ErrorEmptyChannelSlugName    = "channel slug name should not be empty"
 	ErrorEmptyChannelType        = "channel type should not be empty"
 	ErrorEmptyMMTeamName         = "mattermost team name should not be empty"
 	ErrorEmptyMSTeamsTeamID      = "ms teams team ID should not be empty"
