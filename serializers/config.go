@@ -68,15 +68,15 @@ func (c *Config) IsConnectionConfigurationValid() error {
 func (c *Config) IsUsersConfigurationValid() error {
 	for idx, user := range c.UsersConfiguration {
 		if user.Username == "" {
-			return errors.New(fmt.Sprintf("%s. index: %d", constants.ErrorEmptyUsername, idx))
+			return fmt.Errorf("%s. index: %d", constants.ErrorEmptyUsername, idx)
 		}
 
 		if user.Email == "" {
-			return errors.New(fmt.Sprintf("%s. index: %d", constants.ErrorEmptyUserEmail, idx))
+			return fmt.Errorf("%s. index: %d", constants.ErrorEmptyUserEmail, idx)
 		}
 
 		if user.Password == "" {
-			return errors.New(fmt.Sprintf("%s. index: %d", constants.ErrorEmptyUserPassword, idx))
+			return fmt.Errorf("%s. index: %d", constants.ErrorEmptyUserPassword, idx)
 		}
 
 		user.Email = strings.TrimSpace(user.Email)
@@ -90,27 +90,27 @@ func (c *Config) IsUsersConfigurationValid() error {
 func (c *Config) IsChannelsConfigurationValid() error {
 	for idx, channel := range c.ChannelsConfiguration {
 		if channel.DisplayName == "" {
-			return errors.New(fmt.Sprintf("%s. index: %d", constants.ErrorEmptyChannelDisplayName, idx))
+			return fmt.Errorf("%s. index: %d", constants.ErrorEmptyChannelDisplayName, idx)
 		}
 
 		if channel.Name == "" {
-			return errors.New(fmt.Sprintf("%s. index: %d", constants.ErrorEmptyChannelSlugName, idx))
+			return fmt.Errorf("%s. index: %d", constants.ErrorEmptyChannelSlugName, idx)
 		}
 
 		if channel.Type == "" {
-			return errors.New(fmt.Sprintf("%s. index: %d", constants.ErrorEmptyChannelType, idx))
+			return fmt.Errorf("%s. index: %d", constants.ErrorEmptyChannelType, idx)
 		}
 
 		if channel.MMTeamName == "" {
-			return errors.New(fmt.Sprintf("%s. index: %d", constants.ErrorEmptyMMTeamName, idx))
+			return fmt.Errorf("%s. index: %d", constants.ErrorEmptyMMTeamName, idx)
 		}
 
 		if channel.MSTeamsTeamID == "" {
-			return errors.New(fmt.Sprintf("%s. index: %d", constants.ErrorEmptyMSTeamsTeamID, idx))
+			return fmt.Errorf("%s. index: %d", constants.ErrorEmptyMSTeamsTeamID, idx)
 		}
 
 		if channel.MSTeamsChannelID == "" {
-			return errors.New(fmt.Sprintf("%s. index: %d", constants.ErrorEmptyMSTeamsChannelID, idx))
+			return fmt.Errorf("%s. index: %d", constants.ErrorEmptyMSTeamsChannelID, idx)
 		}
 
 		channel.Name = strings.TrimSpace(channel.Name)
@@ -119,7 +119,7 @@ func (c *Config) IsChannelsConfigurationValid() error {
 		channel.MSTeamsChannelID = strings.TrimSpace(channel.MSTeamsChannelID)
 
 		if channel.Type != string(model.ChannelTypePrivate) && channel.Type != string(model.ChannelTypeOpen) {
-			return errors.New(fmt.Sprintf("%s. index: %d", constants.ErrorInvalidChannelType, idx))
+			return fmt.Errorf("%s. index: %d", constants.ErrorInvalidChannelType, idx)
 		}
 	}
 
