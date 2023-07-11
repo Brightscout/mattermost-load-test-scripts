@@ -43,4 +43,4 @@ Make sure you have the following components installed:
 
 - Run the command `make create_posts` to create the random posts in the Mattermost channels, DMs, and GMs.
 
-- Run the command `make clear_store` to clear all the stored data present in the temporary database to start load testing with new details.
+- Run the command `make clear_store` to clear all the stored data present in the temporary file called `temp_store.json` to start load testing with new details.

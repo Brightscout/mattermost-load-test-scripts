@@ -2,6 +2,8 @@ package serializers
 
 import (
 	"errors"
+	"fmt"
+	"strings"
 
 	"github.com/Brightscout/mattermost-load-test-scripts/constants"
 	"github.com/mattermost/mattermost-server/v6/model"
@@ -55,55 +57,69 @@ func (c *Config) IsConnectionConfigurationValid() error {
 		return errors.New(constants.ErrorEmptyAdminPassword)
 	}
 
+	config := c.ConnectionConfiguration
+	config.ServerURL = strings.TrimRight(strings.TrimSpace(config.ServerURL), "/")
+	config.AdminEmail = strings.TrimSpace(config.AdminEmail)
+	config.AdminPassword = strings.TrimSpace(config.AdminPassword)
+
 	return nil
 }
 
 func (c *Config) IsUsersConfigurationValid() error {
-	for _, user := range c.UsersConfiguration {
+	for idx, user := range c.UsersConfiguration {
 		if user.Username == "" {
-			return errors.New(constants.ErrorEmptyUsername)
+			return fmt.Errorf("%s. index: %d", constants.ErrorEmptyUsername, idx)
 		}
 
 		if user.Email == "" {
-			return errors.New(constants.ErrorEmptyUserEmail)
+			return fmt.Errorf("%s. index: %d", constants.ErrorEmptyUserEmail, idx)
 		}
 
 		if user.Password == "" {
-			return errors.New(constants.ErrorEmptyUserPassword)
+			return fmt.Errorf("%s. index: %d", constants.ErrorEmptyUserPassword, idx)
 		}
+
+		user.Email = strings.TrimSpace(user.Email)
+		user.Username = strings.TrimSpace(user.Username)
+		user.Password = strings.TrimSpace(user.Password)
 	}
 
 	return nil
 }
 
 func (c *Config) IsChannelsConfigurationValid() error {
-	for _, channel := range c.ChannelsConfiguration {
+	for idx, channel := range c.ChannelsConfiguration {
 		if channel.DisplayName == "" {
-			return errors.New(constants.ErrorEmptyChannelDisplayName)
+			return fmt.Errorf("%s. index: %d", constants.ErrorEmptyChannelDisplayName, idx)
 		}
 
 		if channel.Name == "" {
-			return errors.New(constants.ErrorEmptyChannelName)
+			return fmt.Errorf("%s. index: %d", constants.ErrorEmptyChannelSlugName, idx)
 		}
 
 		if channel.Type == "" {
-			return errors.New(constants.ErrorEmptyChannelType)
+			return fmt.Errorf("%s. index: %d", constants.ErrorEmptyChannelType, idx)
 		}
 
 		if channel.MMTeamName == "" {
-			return errors.New(constants.ErrorEmptyMMTeamName)
+			return fmt.Errorf("%s. index: %d", constants.ErrorEmptyMMTeamName, idx)
 		}
 
 		if channel.MSTeamsTeamID == "" {
-			return errors.New(constants.ErrorEmptyMSTeamsTeamID)
+			return fmt.Errorf("%s. index: %d", constants.ErrorEmptyMSTeamsTeamID, idx)
 		}
 
 		if channel.MSTeamsChannelID == "" {
-			return errors.New(constants.ErrorEmptyMSTeamsChannelID)
+			return fmt.Errorf("%s. index: %d", constants.ErrorEmptyMSTeamsChannelID, idx)
 		}
 
+		channel.Name = strings.TrimSpace(channel.Name)
+		channel.Type = strings.TrimSpace(channel.Type)
+		channel.MSTeamsTeamID = strings.TrimSpace(channel.MSTeamsTeamID)
+		channel.MSTeamsChannelID = strings.TrimSpace(channel.MSTeamsChannelID)
+
 		if channel.Type != string(model.ChannelTypePrivate) && channel.Type != string(model.ChannelTypeOpen) {
-			return errors.New(constants.ErrorInvalidChannelType)
+			return fmt.Errorf("%s. index: %d", constants.ErrorInvalidChannelType, idx)
 		}
 	}
 
