@@ -35,9 +35,11 @@
         }
     ],
     "PostsConfiguration": {
-        "Count": 100,
         "MaxWordsCount": 10,
-        "MaxWordLength": 10,
+        "MaxWordLength": 10
+    },
+    "LoadTestConfiguration": {
+        "VirtualUserCount": 100,
         "Duration": "30s"
     }
 }

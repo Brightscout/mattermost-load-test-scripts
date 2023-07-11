@@ -44,14 +44,16 @@ The MS Teams Channel ID to which the Mattermost channel is to be linked.
 
 ## Post Configurations
 
-### Count: *int*
-The count of virtual users running concurrently and creating posts in the Mattermost channels, DMs, and GMs.
-
 ### MaxWordsCount: *int*
 The maximum number of words in a sentence in a post.
 
 ### MaxWordLength: *int*
 The maximum length of each word in a post message.
+
+## Load test Configuration
+
+### VirtualUserCount: *int*
+The count of virtual users running concurrently and creating posts in the Mattermost channels, DMs, and GMs.
 
 ### Duration: *string*
 The duration(in seconds) specifying the total duration of the test run.

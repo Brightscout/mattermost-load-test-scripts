@@ -4,8 +4,8 @@ const config = JSON.parse(open('../config/config.json'));
 const creds = JSON.parse(open('../temp_store.json'));
 
 export const options = {
-    vus: config.PostsConfiguration.Count,
-    duration: config.PostsConfiguration.Duration,
+    vus: config.LoadTestConfiguration.VirtualUserCount,
+    duration: config.LoadTestConfiguration.Duration,
 }
 
 export function setup() {
