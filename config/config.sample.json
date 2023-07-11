@@ -39,7 +39,7 @@
         "MaxWordLength": 10
     },
     "LoadTestConfiguration": {
-        "VirtualUserCount": 100,
+        "VirtualUserCount": 5,
         "Duration": "30s"
     }
 }
