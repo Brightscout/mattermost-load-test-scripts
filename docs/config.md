@@ -57,3 +57,15 @@ The count of virtual users running concurrently and creating posts in the Matter
 
 ### Duration: *string*
 The duration(in seconds) specifying the total duration of the test run.
+
+### RPS: *boolean*
+Set this value to `true` to use the request per second configuration.
+
+### TimeUnit: *string*
+Period of time to apply the rate value.
+
+### Executor: *string*
+Types of executors to apply for the request rate. Available executors are: `ramping-arrival-rate` and `constant-arrival-rate`.
+
+### Rate: *int*
+Number of iterations to start during each time unit period.
