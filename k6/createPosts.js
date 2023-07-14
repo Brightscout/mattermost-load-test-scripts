@@ -3,9 +3,25 @@ import http from 'k6/http';
 const config = JSON.parse(open('../config/config.json'));
 const creds = JSON.parse(open('../temp_store.json'));
 
-export const options = {
-    vus: config.LoadTestConfiguration.VirtualUserCount,
-    duration: config.LoadTestConfiguration.Duration,
+export var options = {};
+if (config.LoadTestConfiguration.RPS) {
+    options = {
+        discardResponseBodies: true,
+        scenarios: {
+            contacts: {
+            executor: config.LoadTestConfiguration.Executor,
+            duration: config.LoadTestConfiguration.Duration,
+            rate: config.LoadTestConfiguration.Rate,
+            timeUnit: config.LoadTestConfiguration.TimeUnit,
+            preAllocatedVUs: config.LoadTestConfiguration.VirtualUserCount,
+            },
+        }
+    }
+} else {
+    options = {
+        vus: config.LoadTestConfiguration.VirtualUserCount,
+        duration: config.LoadTestConfiguration.Duration,
+    }
 }
 
 export function setup() {

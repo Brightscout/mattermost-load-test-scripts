@@ -39,7 +39,11 @@
         "MaxWordLength": 10
     },
     "LoadTestConfiguration": {
-        "VirtualUserCount": 5,
-        "Duration": "30s"
+        "VirtualUserCount": 50,
+        "Duration": "30s",
+        "RPS": false,
+        "TimeUnit": "1s",
+        "Executor": "constant-arrival-rate",
+        "Rate": 30
     }
 }
