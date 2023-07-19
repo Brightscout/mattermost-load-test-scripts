@@ -10,6 +10,7 @@ import (
 	"go.uber.org/zap"
 )
 
+// TODO: enhance validations
 func main() {
 	logger, err := zap.NewProduction()
 	if err != nil {
