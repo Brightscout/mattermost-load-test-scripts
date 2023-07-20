@@ -87,5 +87,8 @@ export default function() {
         Authorization: `Bearer ${getRandomToken()}`,
     }
 
-    http.post(`${config.ConnectionConfiguration.ServerURL}/api/v4/posts`, payload, {headers});
+    const resp = http.post(`${config.ConnectionConfiguration.ServerURL}/api/v4/posts`, payload, {headers});
+    check(resp, {
+        'Post status is 201': (r) => resp.status === 201,
+    });
 }

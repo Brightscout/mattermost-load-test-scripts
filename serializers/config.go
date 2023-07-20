@@ -45,28 +45,32 @@ type PostsConfiguration struct {
 }
 
 func (c *Config) IsConnectionConfigurationValid() error {
-	if c.ConnectionConfiguration.ServerURL == "" {
-		return errors.New(constants.ErrorEmptyServerURL)
-	}
-
-	if c.ConnectionConfiguration.AdminEmail == "" {
-		return errors.New(constants.ErrorEmptyAdminEmail)
-	}
-
-	if c.ConnectionConfiguration.AdminPassword == "" {
-		return errors.New(constants.ErrorEmptyAdminPassword)
-	}
-
 	config := c.ConnectionConfiguration
 	config.ServerURL = strings.TrimRight(strings.TrimSpace(config.ServerURL), "/")
 	config.AdminEmail = strings.TrimSpace(config.AdminEmail)
 	config.AdminPassword = strings.TrimSpace(config.AdminPassword)
+
+	if config.ServerURL == "" {
+		return errors.New(constants.ErrorEmptyServerURL)
+	}
+
+	if config.AdminEmail == "" {
+		return errors.New(constants.ErrorEmptyAdminEmail)
+	}
+
+	if config.AdminPassword == "" {
+		return errors.New(constants.ErrorEmptyAdminPassword)
+	}
 
 	return nil
 }
 
 func (c *Config) IsUsersConfigurationValid() error {
 	for idx, user := range c.UsersConfiguration {
+		user.Email = strings.TrimSpace(user.Email)
+		user.Username = strings.TrimSpace(user.Username)
+		user.Password = strings.TrimSpace(user.Password)
+
 		if user.Username == "" {
 			return fmt.Errorf("%s. index: %d", constants.ErrorEmptyUsername, idx)
 		}
@@ -79,9 +83,6 @@ func (c *Config) IsUsersConfigurationValid() error {
 			return fmt.Errorf("%s. index: %d", constants.ErrorEmptyUserPassword, idx)
 		}
 
-		user.Email = strings.TrimSpace(user.Email)
-		user.Username = strings.TrimSpace(user.Username)
-		user.Password = strings.TrimSpace(user.Password)
 	}
 
 	return nil
@@ -89,6 +90,11 @@ func (c *Config) IsUsersConfigurationValid() error {
 
 func (c *Config) IsChannelsConfigurationValid() error {
 	for idx, channel := range c.ChannelsConfiguration {
+		channel.Name = strings.TrimSpace(channel.Name)
+		channel.Type = strings.TrimSpace(channel.Type)
+		channel.MSTeamsTeamID = strings.TrimSpace(channel.MSTeamsTeamID)
+		channel.MSTeamsChannelID = strings.TrimSpace(channel.MSTeamsChannelID)
+
 		if channel.DisplayName == "" {
 			return fmt.Errorf("%s. index: %d", constants.ErrorEmptyChannelDisplayName, idx)
 		}
@@ -112,11 +118,6 @@ func (c *Config) IsChannelsConfigurationValid() error {
 		if channel.MSTeamsChannelID == "" {
 			return fmt.Errorf("%s. index: %d", constants.ErrorEmptyMSTeamsChannelID, idx)
 		}
-
-		channel.Name = strings.TrimSpace(channel.Name)
-		channel.Type = strings.TrimSpace(channel.Type)
-		channel.MSTeamsTeamID = strings.TrimSpace(channel.MSTeamsTeamID)
-		channel.MSTeamsChannelID = strings.TrimSpace(channel.MSTeamsChannelID)
 
 		if channel.Type != string(model.ChannelTypePrivate) && channel.Type != string(model.ChannelTypeOpen) {
 			return fmt.Errorf("%s. index: %d", constants.ErrorInvalidChannelType, idx)
